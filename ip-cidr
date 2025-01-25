@@ -1,0 +1,94 @@
+#!/usr/bin/env python3
+"""
+Recives an IP address and a CIDR and returns the Network Mask,
+the Network ID, the Broadcast Address
+and the total range of hosts in the network
+(discounting the NID and the BA)
+"""
+
+def decimal_to_binary(num: int) -> list:
+    return list(bin(num)[2:])
+
+def binary_to_decimal(num: str) -> int:
+    return int(num, 2)
+
+def bin_to_ip(ip: list) -> str:
+    ret = []
+    aux = []
+    for element in ip:
+        aux.append(element)
+        if len(aux) == 8:
+            ret.append(str(binary_to_decimal("".join(aux))))
+            aux.clear()
+    return ".".join(ret)
+
+def ip_validator(ip: str):
+    try:
+        octets = ip.split(".")
+        return (
+            len(octets) == 4 and
+            all(0 <= int(octet) <= 255 for octet in octets)
+        )
+    except ValueError:
+        return False
+
+def cidr_validator(cidr: int):
+    return 0 <= cidr <= 32
+
+def ip_cidr_converter():
+    
+    ip = input("Your IP address: ")
+    cidr = int(input("Your CIDR: "))
+    
+    
+    if not ip_validator(ip):
+        print("Error: dirección IP inválida.")
+    
+    if not cidr_validator(cidr):
+        print("Error: CIDR inválido.")
+
+    
+    binary_net_id: list = []
+    binary_ip_array: list = []
+    broadcast_var: int = 32 - cidr
+    
+    binary_subnett: list = ["1"] * cidr + ["0"] * broadcast_var
+
+    ip_array = ip.split(".")
+    
+    
+    for i in ip_array:
+        binary_ip_element = decimal_to_binary(int(i))
+
+        while len(binary_ip_element) < 8:
+            binary_ip_element.insert(0, "0")
+        
+        binary_ip_array.extend(binary_ip_element)
+
+    for index in range(32):
+        
+        if binary_subnett[index] == "1" and binary_ip_array[index] == "1":
+            binary_net_id.append("1")
+        
+        else:
+            binary_net_id.append("0")
+    
+    
+    binary_broadcast=binary_net_id[:]
+
+    for number in range(1, broadcast_var+1):
+        binary_broadcast[-number]="1"
+   
+    total_hosts = binary_to_decimal("".join(binary_broadcast)) - binary_to_decimal("".join(binary_net_id)) - 1
+
+    print("\nNetwork mask:")
+    print(bin_to_ip(binary_subnett))
+    print("\nNetwork ID:")
+    print(bin_to_ip(binary_net_id))
+    print("\nBroadcast Address:")
+    print(bin_to_ip(binary_broadcast))
+    print(f"\nTotal hosts:\n{total_hosts}")
+
+
+if __name__ == "__main__":
+    ip_cidr_converter()
