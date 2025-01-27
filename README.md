@@ -33,8 +33,11 @@ chmod +x ip-cidr
 1. Run the script from the repo folder or add it to a rute of your PATH like "/usr/bin/".
 2. Input the IP address and CIDR when prompted.
 3. View the results.
+
 ![image](./images/POC1.png)
+
 ![image](./images/POC2.png)
+
 ## Input Validation
 
 1. IP Address: Must be a valid IPv4 address (e.g., 192.168.1.1).
