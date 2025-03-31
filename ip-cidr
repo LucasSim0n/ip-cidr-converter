@@ -6,6 +6,8 @@ and the total range of hosts in the network
 (discounting the NID and the BA)
 """
 
+import sys
+
 def decimal_to_binary(num: int) -> list:
     return list(bin(num)[2:])
 
@@ -43,9 +45,11 @@ def ip_cidr_converter():
     
     if not ip_validator(ip):
         print("Error: dirección IP inválida.")
+        sys.exit(1)
     
     if not cidr_validator(cidr):
         print("Error: CIDR inválido.")
+        sys.exit(1)
 
     
     binary_net_id: list = []
