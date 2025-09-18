@@ -47,7 +47,7 @@ If the inputs are invalid, an error message will be displayed.
 
 ## TODO
 
-Implementate argparse lib for a more ergonomic usage in command-line:
+Implement argparse lib for a more ergonomic usage in command-line:
 ```bash
 ip-cidr 192.168.0.14/24
 ```
